@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Pal - Your Virtual Plant Care Assistant</title>
+    <!-- We are using the existing style.css file -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <span class="logo-text">Plant Pal</span>
+                </div>
+
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#catalogue">Plants</a>
+                    <a href="#testimonials">Reviews</a>
+                    <a href="#contact">About</a>
+                </div>
+
+                <!-- UPDATED: Added IDs for our JavaScript -->
+                <div class="nav-buttons" id="nav-auth-buttons">
+                    <button class="btn-ghost" id="signInBtn">Sign In</button>
+                    <button class="btn-primary" id="getStartedBtn">Get Started</button>
+                </div>
+                <!-- This will be shown after login -->
+                <div class="nav-user" id="nav-user-details" style="display: none;">
+                    <span id="usernameDisplay"></span>
+                    <button class="btn-ghost" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Unchanged) -->
+    <section id="hero">
+        <video autoplay loop muted playsinline class="hero-video">
+            <source src="asset/animation.webm" type="video/webm">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-inner">
+                <div class="hero-badge">
+                    <i class="fas fa-seedling"></i>
+                    <span>Trusted by over 7M plant lovers worldwide</span>
+                </div>
+                <h1 class="hero-title">
+                    Keep your plants 
+                    <span class="highlight">
+                        thriving
+                        <svg class="underline" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 10C50 2 150 2 198 10" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                </h1>
+                <p class="hero-description">
+                    Personalized care schedules, smart reminders, plant identification, and expert guidance. Everything you need to become a confident plant parent.
+                </p>
+                <div class="hero-buttons">
+                    <!-- UPDATED: Added ID to link to sign-up -->
+                    <button class="btn-hero-primary" id="heroGetStartedBtn">
+                        <i class="fas fa-leaf"></i>
+                        Start Your Journey
+                    </button>
+                    <button class="btn-hero-secondary">
+                        <i class="fas fa-play-circle"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon stat-primary">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-text">
+                            <div class="stat-value">4.8</div>
+                            <div class="stat-label">App Rating</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon stat-secondary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-text">
+                            <div class="stat-value">7M+</div>
+                            <div class="stat-label">Happy Users</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon stat-accent">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-text">
+                            <div class="stat-value">#1</div>
+                            <div class="stat-label">Plant Care App</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Unchanged) -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Everything You Need</p>
+                <h2 class="section-title">
+                    Become a confident <span class="text-primary">plant parent</span>
+                </h2>
+                <p class="section-description">
+                    Plant Pal combines smart technology with expert knowledge to make plant care simple and enjoyable.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" data-delay="0">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Care Schedules</h3>
+                    <p class="feature-description">Get personalized watering, fertilizing, and care reminders tailored to each plant's needs.</p>
+                </div>
+
+                <div class="feature-card" data-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 class="feature-title">Plant Identification</h3>
+                    <p class="feature-description">Snap a photo to instantly identify plants and get detailed care instructions.</p>
+                </div>
+
+                <div class="feature-card" data-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Growth Tracking</h3>
+                    <p class="feature-description">Monitor your plants' progress with photos, notes, and health tracking over time.</p>
+                </div>
+
+                <div class="feature-card" data-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="feature-title">Light Meter</h3>
+                    <p class="feature-description">Measure light levels to ensure your plants are in the perfect spot.</p>
+                </div>
+
+                <div class="feature-card" data-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Guides</h3>
+                    <p class="feature-description">Access step-by-step guides, tips, and articles from plant care experts.</p>
+                </div>
+
+                <div class="feature-card" data-delay="500">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Smart Notifications</h3>
+                    <p class="feature-description">Never forget to care for your plants with timely, intelligent reminders.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plant Catalogue Section -->
+    <section id="catalogue">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Plant Catalogue</p>
+                <h2 class="section-title">
+                    Discover your next <span class="text-primary">green companion</span>
+                </h2>
+                <p class="section-description">
+                    Browse our extensive collection of plants with detailed care instructions and tips.
+                </p>
+            </div>
+
+            <!-- 
+                UPDATED: The grid is now empty.
+                Our app.js file will fetch data from get_plants.php 
+                and fill this grid dynamically.
+            -->
+            <div class="plants-grid" id="plants-grid-container">
+                <!-- Plant cards will be injected here by JavaScript -->
+                <div class="loading-spinner" id="plants-loader"></div>
+            </div>
+
+            <div class="catalogue-cta">
+                <button class="btn-large">
+                    Browse All Plants
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section (Unchanged) -->
+    <section id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-subtitle">Testimonials</p>
+                <h2 class="section-title">
+                    Loved by plant parents <span class="text-primary">everywhere</span>
+                </h2>
+                <p class="section-description">
+                    Join thousands of happy users who've transformed their plant care journey.
+                </p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Plant Pal has completely transformed how I care for my plants. The reminders are spot-on and the growth tracking feature is amazing!"</p>
+                    <div class="testimonial-author">
+                        <img src="asset/happy-woman-portrait.png" alt="Sarah Johnson">
+                        <div>
+                            <p class="author-name">Sarah Johnson</p>
+                            <p class="author-role">Plant Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"As someone who travels frequently, the smart watering reminders based on weather have been a lifesaver. My plants have never looked better!"</p>
+                    <div class="testimonial-author">
+                        <img src="asset/smiling-man-portrait.png" alt="Michael Chen">
+                        <div>
+                            <p class="author-name">Michael Chen</p>
+                            <p class="author-role">Urban Gardener</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I used to kill every plant I touched. Plant Pal made it so easy to understand what each plant needs. Now I have a thriving indoor jungle!"</p>
+                    <div class="testimonial-author">
+                        <img src="asset/happy-woman-portrait.png" alt="Emma Williams">
+                        <div>
+                            <p class="author-name">Emma Williams</p>
+                            <p class="author-role">Beginner Plant Parent</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Unchanged) -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-leaf"></i>
+                        <span>Plant Pal</span>
+                    </div>
+                    <p class="footer-description">
+                        Your virtual plant care assistant. Keep your plants alive and thriving with personalized care schedules.
+                    </s_p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Features</h3>
+                    <ul>
+                        <li><a href="#">Plant Catalogue</a></li>
+                        <li><a href="#">Care Reminders</a></li>
+                        <li><a href="#">Growth Tracking</a></li>
+                        <li><a href="#">Plant Identification</a></li>
+                        <li><a href="#">Expert Tips</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Plant Pal. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy</a>
+                    <span>•</span>
+                    <a href="#">Terms</a>
+                    <span>•</span>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--
+        NEW: Modals for Sign Up and Sign In
+        These are hidden by default and shown by JavaScript.
+    -->
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+
+    <!-- Sign Up Modal -->
+    <div class="modal" id="signUpModal">
+        <button class="modal-close" id="closeSignUpBtn">&times;</button>
+        <h2 class="modal-title">Get Started with Plant Pal</h2>
+        <p class="modal-subtitle">Create your free account to save and track your plants.</p>
+        <form id="signUpForm" class="modal-form">
+            <div class="form-group">
+                <label for="signUpUsername">Username</label>
+                <input type="text" id="signUpUsername" placeholder="e.g., PlantLover123" required>
+            </div>
+            <div class="form-group">
+                <label for="signUpEmail">Email</label>
+                <input type="email" id="signUpEmail" placeholder="you@example.com" required>
+            </div>
+
+            <!-- START: Add these lines here -->
+            <div class="form-group">
+                <label for="signUpLocation">Your Location (City)</label>
+                <input type="text" id="signUpLocation" placeholder="e.g., London" required>
+            </div>
+            <!-- END: Add these lines here -->
+
+            <div class="form-group">
+                <label for="signUpPassword">Password</label>
+                <input type="password" id="signUpPassword" placeholder="Min. 8 characters" required>
+            </div>
+            <button type="submit" class="btn-primary modal-btn">Create Account</button>
+            <p class="form-message" id="signUpMessage"></p>
+        </form>
+        <p class="modal-switch">
+            Already have an account? <a href="#" id="switchToSignIn">Sign In</a>
+        </p>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="modal" id="signInModal">
+        <button class="modal-close" id="closeSignInBtn">&times;</button>
+        <h2 class="modal-title">Welcome Back!</h2>
+        <p class="modal-subtitle">Sign in to access your plant collection.</p>
+        <form id="signInForm" class="modal-form">
+            <div class="form-group">
+                <label for="signInEmail">Email</label>
+                <input type="email" id="signInEmail" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="signInPassword">Password</label>
+                <input type="password" id="signInPassword" placeholder="Your password" required>
+            </div>
+            <button type="submit" class="btn-primary modal-btn">Sign In</button>
+            <p class="form-message" id="signInMessage"></p>
+        </form>
+        <p class="modal-switch">
+            Don't have an account? <a href="#" id="switchToSignUp">Get Started</a>
+        </p>
+    </div>
+
+
+    <!-- We are using the updated app.js file -->
+    <script src="app.js"></script>
+</body>
+</html>
