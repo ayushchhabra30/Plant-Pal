@@ -6,12 +6,1240 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plant Pal - Your Virtual Plant Care Assistant</title>
     <!-- We are using the existing style.css file -->
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        /* * style.css
+ * This file is UPDATED.
+ * It includes all your original styles, plus new styles for the
+ * modals, forms, and loading spinner.
+ */
+
+/* Reset and Base Styles */
+* {
+  margin: 3px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Nature-inspired color palette */
+  --color-background:#CDEAC0;
+  --color-foreground: #1a3a2e;
+  --color-primary: #2d7a4f;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f4d35e;
+  --color-secondary-foreground: #1a3a2e;
+  --color-muted: #CDEAC0;
+  --color-muted-foreground: #4a6b5c;
+  --color-card:#F0FFF0;
+  --color-card-foreground: #1a3a2e;
+  --color-border: #d4e8d9;
+  --color-accent: #f4d35e;
+  --color-accent-foreground: #1a3a2e;
+  --color-error: #d94040;
+  --color-error-bg: #fdecec;
+  --color-success: #2d7a4f;
+  --color-success-bg: #e8f5e9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Add this class to body when a modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Navigation */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  padding: 1.25rem 0;
+}
+
+#navbar.scrolled {
+  background-color: rgba(250, 253, 249, 0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 0.75rem 0;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-foreground);
+  font-size: 1.25rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--color-foreground);
+  text-decoration: none;
+  font-weight: 500;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-foreground);
+  font-weight: 500;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-foreground);
+  transition: all 0.3s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--color-primary);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  padding: 0.625rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #256340;
+  transform: scale(1.05);
+}
+
+/* Hero Section (Original) */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 4rem;
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(250, 253, 249, 0.7), rgba(250, 253, 249, 0.5), rgba(250, 253, 249, 0.7));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(45, 122, 79, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(45, 122, 79, 0.2);
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.hero-badge i {
+  color: var(--color-primary);
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+.highlight {
+  color: var(--color-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.underline {
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+.hero-description {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  color: var(--color-muted-foreground);
+  max-width: 48rem;
+  margin: 0 auto 2rem;
+  font-weight: 300;
+  line-height: 1.6;
+  animation: fadeInUp 0.6s ease-out 0.4s backwards;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding-top: 1.5rem;
+  animation: fadeInUp 0.6s ease-out 0.6s backwards;
+}
+
+.btn-hero-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  padding: 1.75rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 20px 40px rgba(45, 122, 79, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-hero-primary:hover {
+  background-color: #256340;
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px rgba(45, 122, 79, 0.4);
+}
+
+.btn-hero-secondary {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  color: var(--color-foreground);
+  border: 2px solid rgba(26, 58, 46, 0.2);
+  padding: 1.75rem 2.5rem;
+  border-radius: 9999px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-hero-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding-top: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.8s backwards;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stat-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.stat-primary {
+  background-color: rgba(45, 122, 79, 0.1);
+  color: var(--color-primary);
+}
+
+.stat-secondary {
+  background-color: rgba(244, 211, 94, 0.2);
+  color: var(--color-secondary-foreground);
+}
+
+.stat-accent {
+  background-color: rgba(244, 211, 94, 0.2);
+  color: var(--color-accent-foreground);
+}
+
+.stat-text {
+  text-align: left;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: bounce 2s infinite;
+}
+
+.scroll-mouse {
+  width: 1.5rem;
+  height: 2.5rem;
+  border: 2px solid rgba(26, 58, 46, 0.3);
+  border-radius: 9999px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.scroll-wheel {
+  width: 0.375rem;
+  height: 0.75rem;
+  background-color: rgba(26, 58, 46, 0.3);
+  border-radius: 9999px;
+}
+
+/* Features Section (Original) */
+#features {
+  padding: 6rem 0;
+  background-color: var(--color-muted);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-subtitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.section-description {
+  font-size: 1.125rem;
+  color: var(--color-muted-foreground);
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background-color: var(--color-card);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border);
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.feature-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-0.5rem);
+}
+
+.feature-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background-color: rgba(45, 122, 79, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.875rem;
+  color: var(--color-primary);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-card-foreground);
+}
+
+.feature-description {
+  color: var(--color-muted-foreground);
+  line-height: 1.6;
+}
+
+/* Plant Catalogue Section */
+#catalogue {
+  padding: 6rem 0;
+  background-color: var(--color-muted);
+}
+
+.plants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+  min-height: 200px; /* Give it some height while loading */
+  position: relative;
+}
+
+/* --- NEW: Loading Spinner --- */
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+    display: none; /* Hidden by default */
+}
+.loading-spinner.visible {
+    display: block;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+
+/* Plant Card Styles (Original, with fade-in animation) */
+.plant-card {
+  background-color: var(--color-card);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border);
+  opacity: 0; /* Make cards fade in */
+  transform: translateY(20px);
+  animation: cardFadeIn 0.5s ease forwards;
+}
+/* --- NEW: Add to My Plants Button Styling --- */
+.btn-plant-add {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-plant-add:hover {
+    background-color: #256340;
+    transform: scale(1.03);
+}
+
+
+@keyframes cardFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.plant-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-0.5rem);
+}
+
+.plant-image {
+  position: relative;
+  height: 16rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(45, 122, 79, 0.05), rgba(244, 211, 94, 0.05));
+}
+
+.plant-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.plant-card:hover .plant-image img {
+  transform: scale(1.1);
+}
+
+.plant-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.plant-badge i {
+  color: var(--color-primary);
+}
+
+.plant-content {
+  padding: 1.5rem;
+}
+
+.plant-header {
+  margin-bottom: 1rem;
+}
+
+.plant-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-card-foreground);
+  margin-bottom: 0.25rem;
+}
+
+.plant-scientific {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+  font-style: italic;
+}
+
+.plant-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.plant-info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+.plant-info-item i {
+  width: 1rem;
+}
+
+.plant-info-item i.fa-droplet {
+  color: #3b82f6;
+}
+
+.plant-info-item i.fa-sun {
+  color: var(--color-secondary);
+}
+.btn-plant-add {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-plant-add:hover {
+  background-color: #256340;
+  transform: scale(1.03);
+}
+
+.btn-plant {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  color: var(--color-foreground);
+}
+
+.btn-plant:hover {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-color: var(--color-primary);
+}
+
+.catalogue-cta {
+  text-align: center;
+}
+
+.btn-large {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-large:hover {
+  background-color: #256340;
+  transform: scale(1.05);
+}
+
+/* Testimonials Section (Original) */
+#testimonials {
+  padding: 6rem 0;
+  background-color: var(--color-background);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background-color: var(--color-card);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-border);
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  color: var(--color-secondary);
+}
+
+.testimonial-text {
+  color: var(--color-card-foreground);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testimonial-author img {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--color-card-foreground);
+}
+
+.author-role {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+/* Footer (Original) */
+footer {
+  background-color: var(--color-card);
+  border-top: 1px solid var(--color-border);
+}
+
+footer .container {
+  padding: 3rem 1.5rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand {
+  grid-column: span 1;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo i {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+
+.footer-logo span {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-card-foreground);
+}
+
+.footer-description {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--color-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-foreground);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.footer-links h3 {
+  font-weight: 600;
+  color: var(--color-card-foreground);
+  margin-bottom: 1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: var(--color-muted-foreground);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-primary);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--color-border);
+  padding-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-bottom p {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground);
+}
+
+.footer-bottom-links a {
+  color: var(--color-muted-foreground);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--color-primary);
+}
+
+/* Animations (Original) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+/* --- NEW: Modal Styles --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 58, 46, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 1010;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    background-color: var(--color-card);
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 450px;
+    padding: 2.5rem;
+    z-index: 1020;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.75rem;
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.5rem;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-card-foreground);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.modal-subtitle {
+    font-size: 1rem;
+    color: var(--color-muted-foreground);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-card-foreground);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 122, 79, 0.1);
+}
+
+.modal-btn {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.form-message {
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    display: none; /* Hidden by default */
+}
+
+.form-message.success {
+    display: block;
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.form-message.error {
+    display: block;
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+.modal-switch {
+    font-size: 0.875rem;
+    color: var(--color-muted-foreground);
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.modal-switch a {
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.modal-switch a:hover {
+    text-decoration: underline;
+}
+
+        /* --- MARQUEE CONTAINER STYLES --- */
+        .ticker-wrapper {
+            /* This is the background color from your image (sage green) */
+            background-color: #d6e6d6; 
+            width: 100%;
+            overflow: hidden; /* Hides the scrollbar */
+            padding: 20px 0;
+            border: 3px solid #c0dcc0;
+           
+            position: relative;
+           border-radius: 100px;
+        }
+
+        /* This inner container holds the scrolling content */
+        .ticker-track {
+            display: flex;
+            width: max-content; /* Ensures width fits all items */
+            gap: 3rem; /* Space between facts */
+            
+            /* The Animation */
+            animation: scroll 40s linear infinite;
+        }
+
+        /* Pause animation on hover so users can read */
+        .ticker-wrapper:hover .ticker-track {
+            animation-play-state: paused;
+        }
+
+        /* Styling for individual facts */
+        .fact-item {
+            display: flex;
+            align-items: center;
+            color: #2f4f2f; /* Dark green text */
+            font-size: 1.2rem;
+            font-weight: 600;
+            white-space: nowrap; /* Keeps text on one line */
+            opacity: 0.9;
+            transition: transform 0.2s;
+        }
+
+        .fact-item:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            cursor: default;
+        }
+
+        .fact-item i {
+            margin-right: 10px;
+            color: #4CAF50; /* Brighter green for icon */
+        }
+
+        /* KEYFRAMES: This creates the infinite movement */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* We move it -50% because we duplicate the content. 
+                   Once it reaches the end of the first set, it snaps back to 0 seamlessly. */
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Mobile Responsiveness */
+       
+/* --- End of New Styles --- */
+
+
+
+/* --- End of New Styles --- */
+
+/* Responsive Design (Original) */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+.fact-item {
+                font-size: 1rem;
+            }
+            .ticker-track {
+                gap: 2rem;
+            }
+  .btn-ghost {
+    display: none;
+  }
+
+  .nav-buttons .btn-ghost {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.125rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .features-grid,
+  .plants-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+    </style>
 </head>
 
 <body>
@@ -414,7 +1642,418 @@
 
 
     <!-- We are using the updated app.js file -->
-    <script src="app.js"></script>
+    <script>
+        /*
+ * app.js (FINAL FULL WORKING VERSION)
+ * Includes:
+ * - Modal handling
+ * - Signup / Signin API
+ * - Plant catalogue loading with "Load More"
+ * - Add to My Plants
+ * - View Care Guide (Money Plant only)
+ */
+
+// --- Navbar Scroll Effect ---
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) navbar.classList.add("scrolled");
+  else navbar.classList.remove("scrolled");
+});
+
+// --- Smooth Scroll ---
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", (e) => {
+    e.preventDefault();
+    const target = document.querySelector(anchor.getAttribute("href"));
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+// --- Feature Card Animations ---
+const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const delay = entry.target.getAttribute("data-delay") || 0;
+      setTimeout(() => entry.target.classList.add("visible"), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll(".feature-card").forEach((card, index) => {
+  card.setAttribute("data-delay", index * 100);
+  observer.observe(card);
+});
+
+// -------------------------
+// START MAIN FUNCTIONALITY
+// -------------------------
+document.addEventListener("DOMContentLoaded", () => {
+
+  // -------------------------
+  // MODAL HANDLING
+  // -------------------------
+  const modalOverlay = document.getElementById('modal-overlay');
+  const signUpModal = document.getElementById('signUpModal');
+  const signInModal = document.getElementById('signInModal');
+
+  const openSignUpButtons = [
+    document.getElementById('getStartedBtn'),
+    document.getElementById('heroGetStartedBtn'),
+    document.getElementById('switchToSignUp')
+  ];
+  const openSignInButtons = [
+    document.getElementById('signInBtn'),
+    document.getElementById('switchToSignIn')
+  ];
+  const closeButtons = [
+    document.getElementById('closeSignUpBtn'),
+    document.getElementById('closeSignInBtn'),
+    modalOverlay
+  ];
+
+  const openModal = (modal) => {
+    const suMsg = document.getElementById('signUpMessage');
+    const siMsg = document.getElementById('signInMessage');
+    if (suMsg) suMsg.textContent = "";
+    if (siMsg) siMsg.textContent = "";
+
+    modalOverlay.classList.add('visible');
+    modal.classList.add('visible');
+    document.body.classList.add('modal-open');
+  };
+
+  const closeModal = () => {
+    modalOverlay.classList.remove('visible');
+    signUpModal.classList.remove('visible');
+    signInModal.classList.remove('visible');
+    document.body.classList.remove('modal-open');
+  };
+
+  openSignUpButtons.forEach(btn =>
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal();
+      openModal(signUpModal);
+    })
+  );
+
+  openSignInButtons.forEach(btn =>
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal();
+      openModal(signInModal);
+    })
+  );
+
+  closeButtons.forEach(btn =>
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeModal();
+    })
+  );
+
+  // -------------------------
+  // AUTH: SIGN UP
+  // -------------------------
+  const signUpForm = document.getElementById('signUpForm');
+  const signUpMessage = document.getElementById('signUpMessage');
+
+  if (signUpForm) {
+    signUpForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('signUpUsername').value;
+      const email = document.getElementById('signUpEmail').value;
+      const location = document.getElementById('signUpLocation').value;
+      const password = document.getElementById('signUpPassword').value;
+
+      if (password.length < 8) {
+        showMessage(signUpMessage, "Password must be at least 8 characters.", "error");
+        return;
+      }
+
+      try {
+        const response = await fetch("signup.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password, location })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showMessage(signUpMessage, result.message, "success");
+          setTimeout(() => { closeModal(); openModal(signInModal); }, 1500);
+        } else {
+          showMessage(signUpMessage, result.message, "error");
+        }
+
+      } catch (error) {
+        showMessage(signUpMessage, "Unexpected error. Try again.", "error");
+      }
+    });
+  }
+
+  // -------------------------
+  // AUTH: SIGN IN
+  // -------------------------
+  const signInForm = document.getElementById('signInForm');
+  const signInMessage = document.getElementById('signInMessage');
+
+  if (signInForm) {
+    signInForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('signInEmail').value;
+      const password = document.getElementById('signInPassword').value;
+
+      try {
+        const response = await fetch("signin.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showMessage(signInMessage, result.message, "success");
+          updateNavForLogin(result.username);
+          setTimeout(closeModal, 1200);
+        } else {
+          showMessage(signInMessage, result.message, "error");
+        }
+
+      } catch (error) {
+        showMessage(signInMessage, "Unexpected error.", "error");
+      }
+    });
+  }
+
+  // Logout
+  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    document.getElementById("nav-auth-buttons").style.display = "flex";
+    document.getElementById("nav-user-details").style.display = "none";
+  });
+
+  function showMessage(elem, msg, type) {
+    if (!elem) return;
+    elem.textContent = msg;
+    elem.className = `form-message ${type}`;
+  }
+
+  function updateNavForLogin(username) {
+    document.getElementById("nav-auth-buttons").style.display = "none";
+    document.getElementById("nav-user-details").style.display = "flex";
+    document.getElementById("usernameDisplay").textContent = `Hi, ${username}!`;
+  }
+
+  // -------------------------
+  // PLANTS: LOAD WITH PAGINATION
+  // -------------------------
+  const plantsGrid = document.getElementById("plants-grid-container");
+  const loader = document.getElementById("plants-loader");
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+  let allPlants = [];
+  const plantsPerPage = 4;
+  let currentIndex = 0;
+
+  function displayNextPlants() {
+    const slice = allPlants.slice(currentIndex, currentIndex + plantsPerPage);
+
+    slice.forEach(plant => {
+      plantsGrid.appendChild(createPlantCard(plant));
+    });
+
+    currentIndex += slice.length;
+
+    if (loadMoreBtn) {
+    if (currentIndex >= allPlants.length) loadMoreBtn.style.display = "none";
+    else loadMoreBtn.style.display = "inline-flex";
+}
+
+  }
+
+  async function fetchAndDisplayPlants() {
+    loader.classList.add("visible");
+
+    try {
+      const response = await fetch("get_plants.php");
+      const data = await response.json();
+
+      loader.classList.remove("visible");
+
+      if (data.success) {
+        allPlants = data.plants;
+        plantsGrid.innerHTML = "";
+        currentIndex = 0;
+        displayNextPlants();
+      } else {
+        plantsGrid.innerHTML = `<p class="form-message error">Could not load plants.</p>`;
+      }
+
+    } catch (err) {
+      loader.classList.remove("visible");
+      plantsGrid.innerHTML = `<p class="form-message error">Error loading plants.</p>`;
+    }
+  }
+
+  function createPlantCard(plant) {
+  const card = document.createElement("div");
+  card.className = "plant-card";
+
+  const guideLink = plant.name === "Money Plant"
+    ? "care_money_plant.html"
+    : "#"; // others do nothing
+
+  card.innerHTML = `
+    <div class="plant-image">
+      <img src="${escapeHTML(plant.image_url)}" alt="${escapeHTML(plant.name)}">
+      <div class="plant-badge">
+        <i class="${escapeHTML(plant.care_level_icon)}"></i>
+        ${escapeHTML(plant.care_level)}
+      </div>
+    </div>
+
+    <div class="plant-content">
+      <div class="plant-header">
+        <h3 class="plant-name">${escapeHTML(plant.name)}</h3>
+        <p class="plant-scientific">${escapeHTML(plant.scientific_name)}</p>
+      </div>
+
+      <div class="plant-info">
+        <div class="plant-info-item"><i class="fas fa-droplet"></i> ${escapeHTML(plant.watering)}</div>
+        <div class="plant-info-item"><i class="fas fa-sun"></i> ${escapeHTML(plant.light)}</div>
+      </div>
+
+      <button class="btn-plant-add" data-plant-id="${plant.id}">
+        <i class="fas fa-plus"></i> Add to My Plants
+      </button>
+
+      <a href="${guideLink}" class="btn-plant">
+        View Care Guide <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  `;
+
+  return card;
+}
+
+
+
+  function escapeHTML(str) {
+    return (str || "").toString()
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // -----------------------------------------------------
+  // CLICK HANDLERS (View Care Guide + Add to My Plants)
+  // -----------------------------------------------------
+  document.addEventListener("click", async (e) => {
+
+    // View Care Guide
+    const guideBtn = e.target.closest(".btn-view-guide");
+    if (guideBtn) {
+      const plantName = guideBtn.dataset.name;
+
+      if (plantName === "Money Plant") {
+        window.location.href = "care_money_plant.html";
+      } else {
+        alert("Care guide coming soon for: " + plantName);
+      }
+      return;
+    }
+
+    // Add to My Plants
+    const addBtn = e.target.closest(".btn-plant-add");
+    if (addBtn) {
+      const plantId = addBtn.dataset.plantId;
+
+      try {
+        const response = await fetch("add_my_plant.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plant_id: plantId })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+      } catch (err) {
+        alert("Could not add plant.");
+      }
+      return;
+    }
+  });
+
+  // Load More
+  loadMoreBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    displayNextPlants();
+  });
+
+  // Initial load
+  fetchAndDisplayPlants();
+  
+});
+ // 1. The List of Plant Facts
+        const plantFacts = [
+            { icon: "fa-leaf", text: "Bamboo is the fastest-growing woody plant on Earth." },
+            { icon: "fa-tree", text: "Trees can communicate via underground fungal networks." },
+            { icon: "fa-sun", text: "Sunflowers follow the movement of the sun across the sky." },
+            { icon: "fa-seedling", text: "The smell of cut grass is a plant distress call." },
+            { icon: "fa-carrot", text: "Carrots were originally purple, not orange." },
+            { icon: "fa-apple-alt", text: "Apples float because they are 25% air." },
+            { icon: "fa-spa", text: "Aloe Vera naturally purifies air in your bedroom." },
+            { icon: "fa-water", text: "Cucumbers are actually a fruit and contain 96% water." },
+            { icon: "fa-cannabis", text: "Plants can recognize their siblings and give them space." },
+            { icon: "fa-lemon", text: "Strawberry is the only fruit with seeds on the outside." }
+        ];
+
+        // 2. Function to Shuffle Array (Fisher-Yates Shuffle)
+        // This ensures the order is random every time the page loads
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 3. Function to Build the Marquee
+        function initTicker() {
+            const track = document.getElementById('tickerTrack');
+            
+            // Shuffle the facts
+            const shuffledFacts = shuffleArray([...plantFacts]);
+
+            // Helper to create HTML string for a fact
+            const createFactHTML = (fact) => `
+                <div class="fact-item">
+                    <i class="fas ${fact.icon}"></i>
+                    <span>${fact.text}</span>
+                </div>
+            `;
+
+            // We create the string of facts
+            const factsString = shuffledFacts.map(createFactHTML).join('');
+
+            // IMPORTANT: We inject the facts TWICE.
+            // This is the trick to make the infinite scroll seamless.
+            // When the animation reaches 50% (the end of the first set),
+            // it resets instantly to 0% (the start of the first set), creating a perfect loop.
+            track.innerHTML = factsString + factsString;
+        }
+
+        // Run when page loads
+        document.addEventListener('DOMContentLoaded', initTicker);
+
+    </script>
 </body>
 
 </html>

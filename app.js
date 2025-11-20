@@ -320,39 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return;
     }
-
-    // Add to My Plants
-    const addBtn = e.target.closest(".btn-plant-add");
-    if (addBtn) {
-      const plantId = addBtn.dataset.plantId;
-
-      try {
-        const response = await fetch("add_my_plant.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plant_id: plantId })
-        });
-
-        const result = await response.json();
-        alert(result.message);
-
-      } catch (err) {
-        alert("Could not add plant.");
-      }
-      return;
-    }
-  });
-
-  // Load More
-  loadMoreBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    displayNextPlants();
-  });
-
-  // Initial load
-  fetchAndDisplayPlants();
-});
- // 1. The List of Plant Facts
+// 1. The List of Plant Facts
         const plantFacts = [
             { icon: "fa-leaf", text: "Bamboo is the fastest-growing woody plant on Earth." },
             { icon: "fa-tree", text: "Trees can communicate via underground fungal networks." },
@@ -403,3 +371,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Run when page loads
         document.addEventListener('DOMContentLoaded', initTicker);
+    // Add to My Plants
+    const addBtn = e.target.closest(".btn-plant-add");
+    if (addBtn) {
+      const plantId = addBtn.dataset.plantId;
+
+      try {
+        const response = await fetch("add_my_plant.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plant_id: plantId })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+
+      } catch (err) {
+        alert("Could not add plant.");
+      }
+      return;
+    }
+  });
+
+  // Load More
+  loadMoreBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    displayNextPlants();
+  });
+
+  // Initial load
+  fetchAndDisplayPlants();
+});
+ 
