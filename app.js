@@ -352,3 +352,54 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial load
   fetchAndDisplayPlants();
 });
+ // 1. The List of Plant Facts
+        const plantFacts = [
+            { icon: "fa-leaf", text: "Bamboo is the fastest-growing woody plant on Earth." },
+            { icon: "fa-tree", text: "Trees can communicate via underground fungal networks." },
+            { icon: "fa-sun", text: "Sunflowers follow the movement of the sun across the sky." },
+            { icon: "fa-seedling", text: "The smell of cut grass is a plant distress call." },
+            { icon: "fa-carrot", text: "Carrots were originally purple, not orange." },
+            { icon: "fa-apple-alt", text: "Apples float because they are 25% air." },
+            { icon: "fa-spa", text: "Aloe Vera naturally purifies air in your bedroom." },
+            { icon: "fa-water", text: "Cucumbers are actually a fruit and contain 96% water." },
+            { icon: "fa-cannabis", text: "Plants can recognize their siblings and give them space." },
+            { icon: "fa-lemon", text: "Strawberry is the only fruit with seeds on the outside." }
+        ];
+
+        // 2. Function to Shuffle Array (Fisher-Yates Shuffle)
+        // This ensures the order is random every time the page loads
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 3. Function to Build the Marquee
+        function initTicker() {
+            const track = document.getElementById('tickerTrack');
+            
+            // Shuffle the facts
+            const shuffledFacts = shuffleArray([...plantFacts]);
+
+            // Helper to create HTML string for a fact
+            const createFactHTML = (fact) => `
+                <div class="fact-item">
+                    <i class="fas ${fact.icon}"></i>
+                    <span>${fact.text}</span>
+                </div>
+            `;
+
+            // We create the string of facts
+            const factsString = shuffledFacts.map(createFactHTML).join('');
+
+            // IMPORTANT: We inject the facts TWICE.
+            // This is the trick to make the infinite scroll seamless.
+            // When the animation reaches 50% (the end of the first set),
+            // it resets instantly to 0% (the start of the first set), creating a perfect loop.
+            track.innerHTML = factsString + factsString;
+        }
+
+        // Run when page loads
+        document.addEventListener('DOMContentLoaded', initTicker);
