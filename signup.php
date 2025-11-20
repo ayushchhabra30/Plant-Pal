@@ -1,75 +1,96 @@
 <?php
-/*
- * signup.php
- * UPDATED:
- * - Removed closing ?> tag.
- * - Added session_start()
- */
 
-// Start a session
-session_start();
+// signup.php (FIXED & CLEAN)
 
-// Set the content type to return JSON *first*
+// Always return JSON
 header('Content-Type: application/json');
 
-// Include the database connection file
+// Enable error display for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'db_connect.php';
 
-// Create an empty array to store the response
 $response = [];
 
-// Check if the request method is POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    // Get the incoming JSON data and decode it
-    $data = json_decode(file_get_contents('php://input'), true);
-
-    // Check if all required fields are present
-    if (!empty($data['username']) && !empty($data['email']) && !empty($data['password']) && !empty($data['location'])) {
-        
-        $username = $conn->real_escape_string($data['username']);
-        $email = $conn->real_escape_string($data['email']);
-        $location = $conn->real_escape_string($data['location']);
-        $password_hash = password_hash($data['password'], PASSWORD_DEFAULT);
-
-        // Check if email or username already exists
-        $sql_check = "SELECT id FROM users WHERE email = ? OR username = ?";
-        $stmt_check = $conn->prepare($sql_check);
-        $stmt_check->bind_param("ss", $email, $username);
-        $stmt_check->execute();
-        $stmt_check->store_result();
-        
-        if ($stmt_check->num_rows > 0) {
-            $response['success'] = false;
-            $response['message'] = 'Username or email already taken.';
-        } else {
-            // User does not exist, proceed with insertion
-            $sql_insert = "INSERT INTO users (username, email, password_hash, location) VALUES (?, ?, ?, ?)";
-            $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("ssss", $username, $email, $password_hash, $location);
-            
-            if ($stmt_insert->execute()) {
-                $response['success'] = true;
-                $response['message'] = 'Sign up successful! You can now sign in.';
-            } else {
-                $response['success'] = false;
-                $response['message'] = 'Error: ' . $stmt_insert->error;
-            }
-            $stmt_insert->close();
-        }
-        $stmt_check->close();
-
-    } else {
-        $response['success'] = false;
-        $response['message'] = 'Please fill in all fields.';
-    }
-} else {
-    $response['success'] = false;
-    $response['message'] = 'Invalid request method.';
+// Must be POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+    exit;
 }
 
+// Read raw JSON
+$raw = file_get_contents("php://input");
+$data = json_decode($raw, true);
+
+// Check JSON validity
+if (!$data) {
+    echo json_encode(["success" => false, "message" => "Invalid JSON."]);
+    exit;
+}
+
+// Validate required fields
+if (
+    empty($data['username']) ||
+    empty($data['email']) ||
+    empty($data['password']) ||
+    empty($data['location'])
+) {
+    echo json_encode(["success" => false, "message" => "Please fill in all fields."]);
+    exit;
+}
+
+// Extract fields
+$username = trim($data['username']);
+$email = trim($data['email']);
+$password = $data['password'];
+$location = trim($data['location']);
+
+// Validate email format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["success" => false, "message" => "Invalid email format."]);
+    exit;
+}
+
+// Hash password
+$password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+// Check if user/email already exists
+$sql = "SELECT id FROM users WHERE email = ? OR username = ? LIMIT 1";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    echo json_encode(["success" => false, "message" => "Database error: " . $conn->error]);
+    exit;
+}
+
+$stmt->bind_param("ss", $email, $username);
+$stmt->execute();
+$stmt->store_result();
+
+if ($stmt->num_rows > 0) {
+    echo json_encode(["success" => false, "message" => "Username or email already taken."]);
+    $stmt->close();
+    exit;
+}
+$stmt->close();
+
+// Insert user
+$sql = "INSERT INTO users (username, email, password_hash, location) VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    echo json_encode(["success" => false, "message" => "Database error: " . $conn->error]);
+    exit;
+}
+
+$stmt->bind_param("ssss", $username, $email, $password_hash, $location);
+
+if ($stmt->execute()) {
+    echo json_encode(["success" => true, "message" => "Sign up successful!"]);
+} else {
+    echo json_encode(["success" => false, "message" => "Insert error: " . $stmt->error]);
+}
+
+$stmt->close();
 $conn->close();
-
-echo json_encode($response);
-
-// No closing ?> tag

@@ -183,35 +183,21 @@
 
     <!-- Plant Catalogue Section -->
     <section id="catalogue">
-        <div class="container">
-            <div class="section-header">
-                <p class="section-subtitle">Plant Catalogue</p>
-                <h2 class="section-title">
-                    Discover your next <span class="text-primary">green companion</span>
-                </h2>
-                <p class="section-description">
-                    Browse our extensive collection of plants with detailed care instructions and tips.
-                </p>
-            </div>
+    <div class="container">
+        <div id="plants-grid-container" class="plants-grid"></div>
 
-            <!-- 
-                UPDATED: The grid is now empty.
-                Our app.js file will fetch data from get_plants.php 
-                and fill this grid dynamically.
-            -->
-            <div class="plants-grid" id="plants-grid-container">
-                <!-- Plant cards will be injected here by JavaScript -->
-                <div class="loading-spinner" id="plants-loader"></div>
-            </div>
-
-            <div class="catalogue-cta">
-                <button class="btn-large">
-                    Browse All Plants
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
+        <!-- Load More Button -->
+        <div class="catalogue-cta">
+            <button id="loadMoreBtn" class="btn-large">
+                Browse More Plants <i class="fas fa-arrow-down"></i>
+            </button>
         </div>
-    </section>
+
+        <!-- Loader -->
+        <div id="plants-loader" class="loading-spinner"></div>
+    </div>
+</section>
+
 
     <!-- Testimonials Section (Unchanged) -->
     <section id="testimonials">

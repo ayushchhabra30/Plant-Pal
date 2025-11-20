@@ -536,6 +536,30 @@ body.modal-open {
   transform: translateY(20px);
   animation: cardFadeIn 0.5s ease forwards;
 }
+/* --- NEW: Add to My Plants Button Styling --- */
+.btn-plant-add {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.btn-plant-add:hover {
+    background-color: #256340;
+    transform: scale(1.03);
+}
+
 
 @keyframes cardFadeIn {
     to {
@@ -633,6 +657,27 @@ body.modal-open {
 
 .plant-info-item i.fa-sun {
   color: var(--color-secondary);
+}
+.btn-plant-add {
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-plant-add:hover {
+  background-color: #256340;
+  transform: scale(1.03);
 }
 
 .btn-plant {
