@@ -1887,10 +1887,13 @@ document.addEventListener("DOMContentLoaded", () => {
       loader.classList.remove("visible");
 
       if (data.success) {
-        allPlants = data.plants;
-        plantsGrid.innerHTML = "";
-        currentIndex = 0;
-        displayNextPlants();
+       allPlants = data.plants;
+plantsGrid.innerHTML = "";
+
+allPlants.forEach(plant => {
+    plantsGrid.appendChild(createPlantCard(plant));
+});
+
       } else {
         plantsGrid.innerHTML = `<p class="form-message error">Could not load plants.</p>`;
       }
@@ -1905,9 +1908,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const card = document.createElement("div");
   card.className = "plant-card";
 
-  const guideLink = plant.name === "Money Plant"
-    ? "care_money_plant.html"
-    : "#"; // others do nothing
+  const guideLink = "care_" + plant.name.toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/\(.*?\)/g, "")     // remove (Holy Basil)
+    .replace(/__/g, "_")         // fix double underscores
+    .replace(/_$/, "")           // remove (_) if at end
+    + ".html";
 
   card.innerHTML = `
     <div class="plant-image">
@@ -1956,18 +1962,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------------------------------
   document.addEventListener("click", async (e) => {
 
-    // View Care Guide
-    const guideBtn = e.target.closest(".btn-view-guide");
-    if (guideBtn) {
-      const plantName = guideBtn.dataset.name;
+  // View Care Guide
+const guideBtn = e.target.closest(".btn-plant");
+if (guideBtn) {
+    const url = guideBtn.getAttribute("href");
 
-      if (plantName === "Money Plant") {
-        window.location.href = "care_money_plant.html";
-      } else {
-        alert("Care guide coming soon for: " + plantName);
-      }
-      return;
+    if (url && url !== "#") {
+        window.location.href = url;
+    } else {
+        alert("Care guide not available.");
     }
+    return;
+}
 
     // Add to My Plants
     const addBtn = e.target.closest(".btn-plant-add");
