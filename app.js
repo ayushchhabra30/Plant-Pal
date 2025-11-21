@@ -1,10 +1,4 @@
-/*
- * app.js (CORRECTED FINAL WORKING VERSION)
- * - Fixed placement of My Garden code
- * - Fixed ticker placement
- * - Fixed click handler issues (btn-plant vs btn-view-guide)
- * - Clean, single DOMContentLoaded block
- */
+
 
 // --- Navbar Scroll Effect ---
 const navbar = document.getElementById("navbar");

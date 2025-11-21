@@ -1,5 +1,5 @@
 <?php
-// db_connect.php (FIXED)
+
 
 // Show all errors during development
 ini_set('display_errors', 1);
@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'ayush9122'); 
-define('DB_NAME', 'plant_pal_db'); // <-- Confirm this EXACT name in phpMyAdmin
+define('DB_NAME', 'plant_pal_db'); 
 
 // ---- Create Connection ----
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);

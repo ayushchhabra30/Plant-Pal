@@ -29,7 +29,7 @@ $plant_id = $data['plant_id'];
 
 $sql = "INSERT INTO my_plants (user_id, plant_id) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iis", $user_id, $plant_id);
+$stmt->bind_param("ii", $user_id, $plant_id);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Added to your collection"]);
