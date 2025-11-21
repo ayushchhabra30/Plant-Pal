@@ -25,11 +25,11 @@ if (!$data || empty($data['plant_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $plant_id = $data['plant_id'];
-$nickname = isset($data['nickname']) ? trim($data['nickname']) : null;
 
-$sql = "INSERT INTO my_plants (user_id, plant_id, nickname) VALUES (?, ?, ?)";
+
+$sql = "INSERT INTO my_plants (user_id, plant_id) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iis", $user_id, $plant_id, $nickname);
+$stmt->bind_param("iis", $user_id, $plant_id);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true, "message" => "Added to your collection"]);

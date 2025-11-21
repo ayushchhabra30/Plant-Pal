@@ -1269,6 +1269,7 @@ footer .container {
                 <!-- This will be shown after login -->
                 <div class="nav-user" id="nav-user-details" style="display: none;">
                     <span id="usernameDisplay"></span>
+                    <button class="btn-primary" id="myGardenBtn">My Garden</button>
                     <button class="btn-ghost" id="logoutBtn">Logout</button>
                 </div>
             </div>
@@ -1433,6 +1434,23 @@ footer .container {
             <div id="plants-loader" class="loading-spinner"></div>
         </div>
     </section>
+<section id="myGardenSection" style="display:none; padding:4rem;">
+    <h2 class="section-title" style="text-align:center;">My Garden</h2>
+
+    <table id="gardenTable" style="width:100%; margin-top:2rem; border-collapse:collapse;">
+        <thead>
+            <tr style="background:#e8f5e9; text-align:left;">
+                <th style="padding:10px;">Image</th>
+                <th style="padding:10px;">Plant Name</th>
+                <th style="padding:10px;">Scientific Name</th>
+                <th style="padding:10px;">Watering</th>
+                <th style="padding:10px;">Light</th>
+                <th style="padding:10px;">Added On</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</section>
 
 
     <!-- Testimonials Section (Unchanged) -->
@@ -2058,6 +2076,54 @@ if (guideBtn) {
 
         // Run when page loads
         document.addEventListener('DOMContentLoaded', initTicker);
+        // 🚀 MY GARDEN BUTTON CLICK
+document.getElementById("myGardenBtn").addEventListener("click", loadMyGarden);
+
+// 🚀 MY GARDEN FUNCTION
+async function loadMyGarden() {
+    try {
+        const response = await fetch("get_my_plants.php");
+        const data = await response.json();
+
+        if (!data.success) {
+            alert(data.message);
+            return;
+        }
+
+        const tbody = document.querySelector("#gardenTable tbody");
+        tbody.innerHTML = "";
+
+        if (data.plants.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align:center; padding:1.5rem;">
+                        You haven't added any plants yet.
+                    </td>
+                </tr>
+            `;
+        } else {
+            data.plants.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${p.image_url}" style="width:100px; border-radius:10px;"></td>
+                        <td>${p.name}</td>
+                        <td><i>${p.sciptific_name}</i></td>
+                        <td>${p.watering}</td>
+                        <td>${p.light}</td>
+                        <td>${p.added_date}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById("myGardenSection").style.display = "block";
+        window.scrollTo(0, document.getElementById("myGardenSection").offsetTop);
+
+    } catch (err) {
+        alert("Error loading My Garden.");
+    }
+}
+
 
     </script>
 </body>

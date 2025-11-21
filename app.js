@@ -1,11 +1,9 @@
 /*
- * app.js (FINAL FULL WORKING VERSION)
- * Includes:
- * - Modal handling
- * - Signup / Signin API
- * - Plant catalogue loading with "Load More"
- * - Add to My Plants
- * - View Care Guide (Money Plant only)
+ * app.js (CORRECTED FINAL WORKING VERSION)
+ * - Fixed placement of My Garden code
+ * - Fixed ticker placement
+ * - Fixed click handler issues (btn-plant vs btn-view-guide)
+ * - Clean, single DOMContentLoaded block
  */
 
 // --- Navbar Scroll Effect ---
@@ -41,10 +39,53 @@ document.querySelectorAll(".feature-card").forEach((card, index) => {
   observer.observe(card);
 });
 
-// -------------------------
-// START MAIN FUNCTIONALITY
-// -------------------------
+/* -------------------------
+   Plant Facts (Ticker)
+   Placed here (top-level) since it's static and can be used by initTicker
+   ------------------------- */
+const plantFacts = [
+  { icon: "fa-leaf", text: "Bamboo is the fastest-growing woody plant on Earth." },
+  { icon: "fa-tree", text: "Trees can communicate via underground fungal networks." },
+  { icon: "fa-sun", text: "Sunflowers follow the movement of the sun across the sky." },
+  { icon: "fa-seedling", text: "The smell of cut grass is a plant distress call." },
+  { icon: "fa-carrot", text: "Carrots were originally purple, not orange." },
+  { icon: "fa-apple-alt", text: "Apples float because they are 25% air." },
+  { icon: "fa-spa", text: "Aloe Vera naturally purifies air in your bedroom." },
+  { icon: "fa-water", text: "Cucumbers are actually a fruit and contain 96% water." },
+  { icon: "fa-cannabis", text: "Plants can recognize their siblings and give them space." },
+  { icon: "fa-lemon", text: "Strawberry is the only fruit with seeds on the outside." }
+];
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function initTicker() {
+  const track = document.getElementById('tickerTrack');
+  if (!track) return;
+  const shuffledFacts = shuffleArray([...plantFacts]);
+  const createFactHTML = (fact) => `
+    <div class="fact-item">
+      <i class="fas ${fact.icon}"></i>
+      <span>${fact.text}</span>
+    </div>
+  `;
+  const factsString = shuffledFacts.map(createFactHTML).join('');
+  // Duplicate for seamless loop
+  track.innerHTML = factsString + factsString;
+}
+
+/* -------------------------
+   MAIN: DOMContentLoaded
+   Everything UI-related goes inside this single block
+   ------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
+  // run ticker init
+  initTicker();
 
   // -------------------------
   // MODAL HANDLING
@@ -74,15 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (suMsg) suMsg.textContent = "";
     if (siMsg) siMsg.textContent = "";
 
-    modalOverlay.classList.add('visible');
-    modal.classList.add('visible');
+    modalOverlay?.classList.add('visible');
+    modal?.classList.add('visible');
     document.body.classList.add('modal-open');
   };
 
   const closeModal = () => {
-    modalOverlay.classList.remove('visible');
-    signUpModal.classList.remove('visible');
-    signInModal.classList.remove('visible');
+    modalOverlay?.classList.remove('visible');
+    signUpModal?.classList.remove('visible');
+    signInModal?.classList.remove('visible');
     document.body.classList.remove('modal-open');
   };
 
@@ -218,25 +259,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function displayNextPlants() {
     const slice = allPlants.slice(currentIndex, currentIndex + plantsPerPage);
-
     slice.forEach(plant => {
       plantsGrid.appendChild(createPlantCard(plant));
     });
-
     currentIndex += slice.length;
 
-    if (currentIndex >= allPlants.length) loadMoreBtn.style.display = "none";
-    else loadMoreBtn.style.display = "inline-flex";
+    if (loadMoreBtn) {
+      if (currentIndex >= allPlants.length) loadMoreBtn.style.display = "none";
+      else loadMoreBtn.style.display = "inline-flex";
+    }
   }
 
   async function fetchAndDisplayPlants() {
-    loader.classList.add("visible");
+    loader?.classList.add("visible");
 
     try {
       const response = await fetch("get_plants.php");
       const data = await response.json();
 
-      loader.classList.remove("visible");
+      loader?.classList.remove("visible");
 
       if (data.success) {
         allPlants = data.plants;
@@ -248,53 +289,54 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     } catch (err) {
-      loader.classList.remove("visible");
+      loader?.classList.remove("visible");
       plantsGrid.innerHTML = `<p class="form-message error">Error loading plants.</p>`;
     }
   }
 
   function createPlantCard(plant) {
-  const card = document.createElement("div");
-  card.className = "plant-card";
+    const card = document.createElement("div");
+    card.className = "plant-card";
 
-  const guideLink = plant.name === "Money Plant"
-    ? "care_money_plant.html"
-    : "#"; // others do nothing
+    // create a consistent filename for care pages
+    const guideLink = "care_" + plant.name.toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/\(.*?\)/g, "")     // remove parentheses content like (Holy Basil)
+      .replace(/__+/g, "_")        // collapse double underscores
+      .replace(/^_|_$/g, "")       // trim underscores
+      + ".html";
 
-  card.innerHTML = `
-    <div class="plant-image">
-      <img src="${escapeHTML(plant.image_url)}" alt="${escapeHTML(plant.name)}">
-      <div class="plant-badge">
-        <i class="${escapeHTML(plant.care_level_icon)}"></i>
-        ${escapeHTML(plant.care_level)}
-      </div>
-    </div>
-
-    <div class="plant-content">
-      <div class="plant-header">
-        <h3 class="plant-name">${escapeHTML(plant.name)}</h3>
-        <p class="plant-scientific">${escapeHTML(plant.scientific_name)}</p>
+    card.innerHTML = `
+      <div class="plant-image">
+        <img src="${escapeHTML(plant.image_url)}" alt="${escapeHTML(plant.name)}">
+        <div class="plant-badge">
+          <i class="${escapeHTML(plant.care_level_icon)}"></i>
+          ${escapeHTML(plant.care_level)}
+        </div>
       </div>
 
-      <div class="plant-info">
-        <div class="plant-info-item"><i class="fas fa-droplet"></i> ${escapeHTML(plant.watering)}</div>
-        <div class="plant-info-item"><i class="fas fa-sun"></i> ${escapeHTML(plant.light)}</div>
+      <div class="plant-content">
+        <div class="plant-header">
+          <h3 class="plant-name">${escapeHTML(plant.name)}</h3>
+          <p class="plant-scientific">${escapeHTML(plant.scientific_name)}</p>
+        </div>
+
+        <div class="plant-info">
+          <div class="plant-info-item"><i class="fas fa-droplet"></i> ${escapeHTML(plant.watering)}</div>
+          <div class="plant-info-item"><i class="fas fa-sun"></i> ${escapeHTML(plant.light)}</div>
+        </div>
+
+        <button class="btn-plant-add" data-plant-id="${plant.id}">
+          <i class="fas fa-plus"></i> Add to My Plants
+        </button>
+
+        <a href="${guideLink}" class="btn-plant">
+          View Care Guide <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
-
-      <button class="btn-plant-add" data-plant-id="${plant.id}">
-        <i class="fas fa-plus"></i> Add to My Plants
-      </button>
-
-      <a href="${guideLink}" class="btn-plant">
-        View Care Guide <i class="fas fa-arrow-right"></i>
-      </a>
-    </div>
-  `;
-
-  return card;
-}
-
-
+    `;
+    return card;
+  }
 
   function escapeHTML(str) {
     return (str || "").toString()
@@ -303,90 +345,104 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/'/g, "&#039;");
   }
 
-  // -----------------------------------------------------
-  // CLICK HANDLERS (View Care Guide + Add to My Plants)
-  // -----------------------------------------------------
-  document.addEventListener("click", async (e) => {
+  // -------------------------
+  // MY GARDEN: Button + Loader
+  // -------------------------
+  const myGardenBtn = document.getElementById("myGardenBtn");
+  if (myGardenBtn) {
+    myGardenBtn.addEventListener("click", loadMyGarden);
+  }
 
-    // View Care Guide
-    const guideBtn = e.target.closest(".btn-view-guide");
-    if (guideBtn) {
-      const plantName = guideBtn.dataset.name;
+  async function loadMyGarden() {
+    try {
+      const response = await fetch("get_my_plants.php");
+      const data = await response.json();
 
-      if (plantName === "Money Plant") {
-        window.location.href = "care_money_plant.html";
+      if (!data.success) {
+        alert(data.message);
+        return;
+      }
+
+      const tbody = document.querySelector("#gardenTable tbody");
+      if (!tbody) {
+        alert("Garden table not found.");
+        return;
+      }
+      tbody.innerHTML = "";
+
+      if (!data.plants || data.plants.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:1.5rem;">
+              You haven't added any plants yet.
+            </td>
+          </tr>
+        `;
       } else {
-        alert("Care guide coming soon for: " + plantName);
+        data.plants.forEach(p => {
+          // Ensure values are escaped/handled
+          const img = escapeHTML(p.image_url || "");
+          const name = escapeHTML(p.name || "");
+          const sci = escapeHTML(p.scientific_name || "");
+          const nick = escapeHTML(p.nickname || "—");
+          const water = escapeHTML(p.watering || "");
+          const light = escapeHTML(p.light || "");
+          const added = escapeHTML(p.added_date || "");
+
+          tbody.innerHTML += `
+            <tr>
+              <td><img src="${img}" style="width:100px; border-radius:10px;"></td>
+              <td>${name}</td>
+              <td><i>${sci}</i></td>
+              <td>${nick}</td>
+              <td>${water}</td>
+              <td>${light}</td>
+              <td>${added}</td>
+            </tr>
+          `;
+        });
+      }
+
+      document.getElementById("myGardenSection").style.display = "block";
+      window.scrollTo({ top: document.getElementById("myGardenSection").offsetTop, behavior: "smooth" });
+
+    } catch (err) {
+      console.error(err);
+      alert("Error loading My Garden.");
+    }
+  }
+
+  // -------------------------
+  // CLICK HANDLER (delegated)
+  // - Handles "Add to My Plants" and "View Care Guide"
+  // -------------------------
+  document.addEventListener("click", async (e) => {
+    // View Care Guide: anchors with class .btn-plant
+    const guideBtn = e.target.closest(".btn-plant");
+    if (guideBtn) {
+      const url = guideBtn.getAttribute("href");
+      if (url && url !== "#") {
+        window.location.href = url;
+      } else {
+        alert("Care guide not available.");
       }
       return;
     }
-// 1. The List of Plant Facts
-        const plantFacts = [
-            { icon: "fa-leaf", text: "Bamboo is the fastest-growing woody plant on Earth." },
-            { icon: "fa-tree", text: "Trees can communicate via underground fungal networks." },
-            { icon: "fa-sun", text: "Sunflowers follow the movement of the sun across the sky." },
-            { icon: "fa-seedling", text: "The smell of cut grass is a plant distress call." },
-            { icon: "fa-carrot", text: "Carrots were originally purple, not orange." },
-            { icon: "fa-apple-alt", text: "Apples float because they are 25% air." },
-            { icon: "fa-spa", text: "Aloe Vera naturally purifies air in your bedroom." },
-            { icon: "fa-water", text: "Cucumbers are actually a fruit and contain 96% water." },
-            { icon: "fa-cannabis", text: "Plants can recognize their siblings and give them space." },
-            { icon: "fa-lemon", text: "Strawberry is the only fruit with seeds on the outside." }
-        ];
 
-        // 2. Function to Shuffle Array (Fisher-Yates Shuffle)
-        // This ensures the order is random every time the page loads
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // 3. Function to Build the Marquee
-        function initTicker() {
-            const track = document.getElementById('tickerTrack');
-            
-            // Shuffle the facts
-            const shuffledFacts = shuffleArray([...plantFacts]);
-
-            // Helper to create HTML string for a fact
-            const createFactHTML = (fact) => `
-                <div class="fact-item">
-                    <i class="fas ${fact.icon}"></i>
-                    <span>${fact.text}</span>
-                </div>
-            `;
-
-            // We create the string of facts
-            const factsString = shuffledFacts.map(createFactHTML).join('');
-
-            // IMPORTANT: We inject the facts TWICE.
-            // This is the trick to make the infinite scroll seamless.
-            // When the animation reaches 50% (the end of the first set),
-            // it resets instantly to 0% (the start of the first set), creating a perfect loop.
-            track.innerHTML = factsString + factsString;
-        }
-
-        // Run when page loads
-        document.addEventListener('DOMContentLoaded', initTicker);
     // Add to My Plants
     const addBtn = e.target.closest(".btn-plant-add");
     if (addBtn) {
       const plantId = addBtn.dataset.plantId;
-
       try {
         const response = await fetch("add_my_plant.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ plant_id: plantId })
         });
-
         const result = await response.json();
-        alert(result.message);
-
+        alert(result.message || "Added");
       } catch (err) {
+        console.error(err);
         alert("Could not add plant.");
       }
       return;
@@ -401,5 +457,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initial load
   fetchAndDisplayPlants();
-});
- 
+}); // end DOMContentLoaded
